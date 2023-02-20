@@ -16,8 +16,11 @@ RUN docker-php-ext-install pdo_mysql zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Copy the Laravel application files to the container
+COPY composer.json /var/www/html/
+RUN composer install --no-interaction --no-scripts --no-autoloader
 COPY . /var/www/html
 
 # Install application dependencies
